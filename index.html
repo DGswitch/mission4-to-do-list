@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do-Doo</title>
+    <link rel="icon" href="img/icon/logo-whitelabel.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>    
+    <main>
+        <section id="user-info-section">
+            <h1>To-Do-Doo</h1>
+            <div id="head-alert" class="alert-message" style="display: none;"></div>
+            <h2 id="user-info-heading"></h2>
+            <div id="user-display-mode" class="user-info-mode">
+                <p id="current-user-display" class="user-display"></p>
+                <button id="edit-user-btn" class="action-button small-button">Edit</button>
+            </div>
+            <form id="user-info-form" class="user-info-mode" style="display: none;">
+                <div class="form-group">
+                    <label class="user-form" for="username-input">Username:</label>
+                    <input class="user-form" type="text" id="username-input" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label class="user-form" for="position-input">Position:</label>
+                    <input class="user-form" type="text" id="position-input" placeholder="Enter your position" required>
+                </div>
+                <button type="submit" id="save-user-btn" class="action-button small-button">Save</button>
+                <button type="button" id="cancel-user-btn" class="action-button small-button secondary-button">Cancel</button>
+            </form>
+        </section>
+
+        <section id="task-management-section">
+            <div id="input-error" class="error-message" style="display: none;"></div>
+            <div class="filter-controls">
+                <label for="filter-date" class="filter-date">Filter by Date:</label>
+                <input type="date" id="filter-date">
+                <button id="clear-filter-btn" class="action-button small-button secondary-button">Clear Filter</button>
+            </div>
+            <h2>Let's Do Your Task!</h2>
+            <form id="todo-form">
+                <div class="form-group">
+                    <label for="type-text"></label>
+                    <input type="text" id="type-text" placeholder="Enter your task here..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="priority">Priority:</label>
+                    <select id="priority" required>
+                        <option value="">Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                
+                
+                <button type="submit" id="add-task-btn" class="action-button">Submit</button>
+            </form>
+        </section>
+
+        <section id="ongoing-tasks-section">
+            <h2></h2>
+            <div id="container-task" class="task-list-container"></div>
+            <div class="button-group">
+                <button id="btn-reset-all-tasks" class="action-button danger-button">Reset All Tasks</button>
+                <button id="btn-clear-history" class="action-button clear-button">Clear Completed Tasks</button>
+            </div>
+        </section>
+
+        <section id="completed-tasks-section">
+            <div id="completed-box" class="task-list-container"></div>
+            <p id="copyright">&copy;DGswitch 2025 - To-Do-Doo |  <span id="live-time"></span></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
