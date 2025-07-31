@@ -358,9 +358,9 @@ function renderTodoList() {
             uncheckSvg.style.display = 'none';
             checkedSvg.style.display = 'flex';
             statusElement.style.backgroundColor = '#28a745';
-            submitDateElement.style.color = '#d0a8ff';
-            submitTimeElement.style.color = '#d0a8ff';
-            trashSvg.style.fill = '#d0a8ff';
+            submitDateElement.style.color = '#b1c1d6';
+            submitTimeElement.style.color = '#b1c1d6';
+            trashSvg.style.fill = '#b1c1d6';
             completedBox.appendChild(sectionContainer);
             hasCompletedTasks = true;
         } else {
