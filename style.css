@@ -496,24 +496,21 @@ task-list-container {
     justify-content: center;
     align-items: center;
     margin: 0;
-    height: 1.6rem;
-    padding: 0.4rem 0.6rem;
-    border-radius: 5px;
-    color: white;
+    font-size: 1rem;
     text-transform: capitalize;
     flex-shrink: 0;
 }
 
 .priority-low {
-    background-color: #28a745;
+    color: #28a745;
 }
 
 .priority-medium {
-    background-color: #ff7b00;
+    color: #ff7b00;
 }
 
 .priority-high {
-    background-color: #dc3545;
+    color: #dc3545;
 }
 
 .timestamp {
