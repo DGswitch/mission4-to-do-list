@@ -41,7 +41,7 @@ h1 {
 
 /* Alert and Error Messages */
 .alert-message, .error-message {
-    display: none;
+    display: block;
     justify-content: center;
     padding: 5px 15px;
     border-radius: 15px;
@@ -560,6 +560,10 @@ task-list-container {
 /* media query */
 @media (max-width: 407px) {
     html {
-        font-size: 70%;
+        font-size: 66%;
+    }
+
+    main {
+        width: 100%;
     }
 }

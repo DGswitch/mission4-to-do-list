@@ -8,7 +8,6 @@ const saveUserBtn = document.getElementById('save-user-btn');
 const cancelUserBtn = document.getElementById('cancel-user-btn');
 const typeText = document.getElementById('type-text');
 const inputPriority = document.getElementById('priority');
-const inputError = document.getElementById('input-error');
 const headAlert = document.getElementById('head-alert');
 const containerTaskBox = document.getElementById('container-task');
 const completedBox = document.getElementById('completed-box');
@@ -30,7 +29,7 @@ function getFormattedDate(dateObj = new Date()) {
     const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
     const day = dateObj.getDate().toString().padStart(2, '0');
     const year = dateObj.getFullYear();
-    return `${month}/${day}/${year}`; // format time: 'Day, Hours : Minutes AM/PM'
+    return `${month}/${day}/${year}`;
   }
 
 function getFormattedTime() {
@@ -68,7 +67,7 @@ function saveTodoList() {
         console.log('TodoList saved to localStorage:', todolist);
     } catch (e) {
         console.error("Error saving todolist to localStorage:", e);
-        showAlert("Failed to save tasks. Storage might be full.", "error");
+        showAlert("Failed to save tasks.", "error");
     }
 }
 
@@ -80,12 +79,12 @@ function loadTodoList() {
             console.log('TodoList loaded from localStorage:', todolist);
         } else {
             todolist = [];
-            console.log('No todolist found in localStorage. Initializing empty array.');
+            console.log('TodoList Not Found!');
         }
     } catch (e) {
-        console.error("Error loading todolist from localStorage:", e);
+        console.error("Error loading todolist:", e);
         todolist = [];
-        showAlert("Failed to load tasks. Data might be corrupted.", "error");
+        showAlert("Failed to load tasks!", "error");
     }
     renderTodoList();
 }
@@ -93,11 +92,11 @@ function loadTodoList() {
 function saveVerifiedId() {
     try {
         localStorage.setItem('verifiedId', JSON.stringify(verifiedId));
-        console.log('VerifiedId saved to localStorage:', verifiedId);
+        console.log('Username & position saved:', verifiedId);
         updateUserDisplay();
     } catch (e) {
-        console.error("Error saving verifiedId to localStorage:", e);
-        showAlert("Failed to save user info. Storage might be full.", "error");
+        console.error("Error saving your username & position:", e);
+        showAlert("Failed to save user info!", "error");
     }
 }
 
@@ -106,15 +105,15 @@ function loadVerifiedId() {
         const savedVerifiedId = localStorage.getItem('verifiedId');
         if (savedVerifiedId) {
             verifiedId = JSON.parse(savedVerifiedId);
-            console.log('VerifiedId loaded:', verifiedId);
+            console.log('User Verified:', verifiedId);
         } else {
             verifiedId = { userId: null, positionId: null };
-            console.log('No verifiedId found. Initializing default.');
+            console.log('No verifiedId found!');
         }
     } catch (e) {
-        console.error("Error loading verifiedId from localStorage:", e);
+        console.error("Error loading your username & position:", e);
         verifiedId = { userId: null, positionId: null };
-        showAlert("Failed to load user info. Data might be corrupted.", "error");
+        showAlert("Failed to load user info!", "error");
     }
     updateUserDisplay();
 }
@@ -123,12 +122,11 @@ function showAlert(message, type = "info") {
     headAlert.textContent = message;
     headAlert.className = 'alert-message';
     if (type === "error") {
-        headAlert.classList.add('error-message');
+        headAlert.style.backgroundColor = '#dc3545'; // Red
     } else if (type === "success") {
-        headAlert.classList.add('alert-message');
         headAlert.style.backgroundColor = '#28a745'; // Green
     } else {
-        headAlert.classList.add('alert-message');
+        headAlert.classList.add('info');
         headAlert.style.backgroundColor = '#f1c40f'; // Yellow
     }
     headAlert.style.display = 'block';
@@ -146,7 +144,6 @@ function updateUserDisplay() {
         userDisplayMode.style.display = 'flex';
         userInfoForm.style.display = 'none';
     } else {
-        currentUserDisplay.innerHTML = 'Please enter your username and position.';
         // Switch edit mode
         userDisplayMode.style.display = 'none';
         userInfoForm.style.display = 'flex';
@@ -163,7 +160,7 @@ function switchToEditMode() {
 function switchToDisplayMode() {
     userDisplayMode.style.display = 'flex';
     userInfoForm.style.display = 'none';
-    updateUserDisplay(); // Re-render display text
+    updateUserDisplay();
 }
 
 function handleUserInfoForm(e) {
@@ -175,37 +172,24 @@ function handleUserInfoForm(e) {
         verifiedId.userId = username;
         verifiedId.positionId = position;
         saveVerifiedId();
-        showAlert("User information saved successfully!", "success");
+        showAlert("User Verified!", "success");
         switchToDisplayMode();
     } else {
-        showAlert("Please fill in both username and position.", "error");
+        showAlert("Please fill your username and position!", "error");
     }
 }
 
 function handleTodoForm(e) {
     e.preventDefault();
 
-    if (!verifiedId.userId || !verifiedId.positionId) {
-        showAlert("Please save your username and position first!", "error");
-        inputError.style.display = 'none';
-        return;
-    }
-
     let inputTextType = typeText.value.trim();
     let selectPriority = inputPriority.value.trim();
 
     if (inputTextType === '' || selectPriority === '') {
-        inputError.innerHTML = 'Please add your task & select priority level!';
-        inputError.style.display = 'block';
-        headAlert.style.display = 'none';
+        showAlert("Please add your task & select priority level!", "error");
         return;
-    } else {
-        inputError.innerHTML = '';
-        inputError.style.display = 'none';
-        headAlert.innerHTML = '';
-        headAlert.style.display = 'none';
     }
-
+    
     const newTask = {
         id: Date.now(),
         task: inputTextType,
@@ -226,10 +210,10 @@ function handleTodoForm(e) {
 }
 
 function renderTodoList() {
-    console.log('Rendering TodoList...');
+    console.log('Rendering data...');
     
     containerTaskBox.innerHTML = '';
-    completedBox.innerHTML = '<h3 id="completed-box-heading">Completed Task</h3>'; // Heading will be managed by JS display property
+    completedBox.innerHTML = '<h3 id="completed-box-heading">Completed Task</h3>';
     const completedBoxHeading = document.getElementById('completed-box-heading');
 
     let hasCompletedTasks = false;
@@ -245,7 +229,7 @@ function renderTodoList() {
 
         .sort((a, b) => {
             // sort status: ongoing -> done
-            if (a.status === 'Ongoing' && b.status === 'Done') return -1;
+            if (a.status === 'Ongoing' && b.status === 'Done') return 2;
             if (a.status === 'Done' && b.status === 'Ongoing') return 1;
 
             const dateA_iso = a.date.split('/').reverse().join('-') + `T${a.time}`;
@@ -255,7 +239,7 @@ function renderTodoList() {
             const dateB = new Date(dateB_iso);
             
             if (dateA < dateB) return 1;
-            if (dateA > dateB) return -1;
+            if (dateA > dateB) return 2;
 
             const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
             return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -350,7 +334,6 @@ function renderTodoList() {
         statusElement.innerHTML = task.status;
         submitDateElement.innerHTML = task.date;
         submitTimeElement.innerHTML = task.time;
-        console.log('Local Date Time:', task.date);
 
         // style status
         if (task.status === 'Done') {
@@ -381,7 +364,7 @@ function renderTodoList() {
                 taskToUpdate.time = getFormattedTime();
                 saveTodoList();
                 renderTodoList();
-                showAlert(`Task "${taskToUpdate.task}" marked as done!`, "success");
+                showAlert(`Task has been completed!`, "success");
             }
         });
 
@@ -402,13 +385,13 @@ function renderTodoList() {
 }
 
 function resetAllTasks() {
-    if (confirm("Are you sure you want to reset ALL tasks (ongoing and completed)? This cannot be undone.")) {
+    if (confirm("Reset all tasks from your local storage?")) {
         todolist = [];
         saveTodoList();
         renderTodoList();
         showAlert("All tasks have been reset!", "success");
     }
-}
+};
 
 // DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -438,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // hapus completed tasks
     if (btnClearHistory) {
         btnClearHistory.addEventListener('click', () => {
-            if (confirm("Are you sure you want to clear ONLY completed tasks?")) {
+            if (confirm("Clear all completed tasks?")) {
                 const initialCount = todolist.length;
                 todolist = todolist.filter(task => task.status !== 'Done');
                 if (todolist.length < initialCount) {
@@ -464,10 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (inputDateValue) {
                 const [year, month, day] = inputDateValue.split('-');
                 currentFilterDate = `${month}/${day}/${year}`;
-                console.log("Filtering Tasks with Date:", currentFilterDate);
             } else {
                 currentFilterDate = null;
-                console.log("Filter date cleared.");
             }
             renderTodoList();
         });
@@ -505,3 +486,6 @@ window.addEventListener("load", function() {
       })
     });
   });
+
+//  bikin set alert di samping task status
+//  tambah task status "Expired"
