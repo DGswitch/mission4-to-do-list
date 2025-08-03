@@ -185,8 +185,14 @@ function handleTodoForm(e) {
     let inputTextType = typeText.value.trim();
     let selectPriority = inputPriority.value.trim();
 
-    if (inputTextType === '' || selectPriority === '') {
+    if  (inputTextType === '' || selectPriority === '') {
         showAlert("Please add your task & select priority level!", "error");
+        return;
+        console.log(username)
+    }
+    
+    if  (inputTextType === '' || selectPriority === '' || verifiedId.userId === null || verifiedId.positionId === null) {
+        showAlert("Please verified your ID!", "error");
         return;
     }
     
